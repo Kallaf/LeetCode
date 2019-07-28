@@ -1,0 +1,4 @@
+# SELECT Name Employee FROM EMPLOYEE EMP WHERE (SELECT Salary FROM EMPLOYEE WHERE ID = EMP.ManagerId) <= EMP.Salary;
+SELECT e.Name Employee 
+From Employee e
+INNER JOIN Employee m ON e.ManagerId = m.Id and e.Salary > m.Salary;
