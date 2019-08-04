@@ -1,0 +1,6 @@
+# Write your MySQL query statement below
+Select weather.id as Id
+from weather
+join weather weather1
+on DATEDIFF(weather.RecordDate,weather1.RecordDate) = 1
+and weather.Temperature > weather1.Temperature;
