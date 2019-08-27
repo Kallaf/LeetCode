@@ -1,20 +1,17 @@
 class Solution {
-    vector<vector<int>> dp;
-    private:
-    int dfs(int i,int j,int n,int m)
-    {
-        if(i == n-1 && j == m-1)return 1;
-        if(dp[i][j])return dp[i][j];
-        int paths = 0;
-        if(i+1<n)paths += dfs(i+1,j,n,m);
-        if(j+1<m)paths += dfs(i,j+1,n,m);
-        dp[i][j] = paths;
-        return paths;
-    }
 public:
     int uniquePaths(int m, int n) {
+        if(!m || !n)return 0;
         vector<int> row(m,0);
-        dp.assign(n,row);
-        return dfs(0,0,n,m);
+        vector<vector<int>> dp(n,row);
+        for(int i=0;i<n;i++)
+            dp[i][0] = 1;
+        for(int j=0;j<m;j++)
+            dp[0][j] = 1;
+        for(int i=1;i<n;i++)
+            for(int j=1;j<m;j++)
+                dp[i][j] = dp[i-1][j] + dp[i][j-1];
+        
+        return dp[n-1][m-1];
     }
 };
