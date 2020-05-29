@@ -1,0 +1,19 @@
+select Request_at as 'Day', 
+round(
+        count(
+            case status
+                when 'cancelled_by_driver' then 1 
+                when 'cancelled_by_client' then 1 
+                else null end
+        )
+        /count(*)
+    ,2) as 'Cancellation Rate'
+from trips
+join users u1
+        on (u1.users_Id = trips.client_Id)
+        and u1.banned = 'No'
+join users u2
+        on (u2.users_Id = trips.driver_Id)
+        and u2.banned = 'No'
+group by Request_at
+having '2013-10-01' <= Request_at and Request_at <= '2013-10-03';
