@@ -1,0 +1,21 @@
+select id, visit_date, people
+from stadium s1
+where ((id+1,id+2) in 
+    (select s1.id,s2.id
+     from stadium s1
+     join stadium s2
+     on s1.id+1 = s2.id
+     and s1.people > 100 and s2.people >= 100)
+or (id-1,id+1) in 
+    (select s1.id,s2.id
+     from stadium s1
+     join stadium s2
+     on s1.id+2 = s2.id
+     and s1.people > 100 and s2.people >= 100)
+or (id-2,id-1) in 
+    (select s1.id,s2.id
+     from stadium s1
+     join stadium s2
+     on s1.id+1 = s2.id
+     and s1.people > 100 and s2.people >= 100)
+)and people >= 100;
