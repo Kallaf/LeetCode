@@ -3,33 +3,37 @@ class Solution {
         Trie trie = new Trie(wordDict);
         char[] ch = s.toCharArray();
         Cache memory = new Cache(trie, ch);
-        return wordBreak(0, memory);
+        return isSentence(0, memory);
     }
     
-    private boolean wordBreak(int start, Cache memory) {
-        if(memory.visited[start]) return memory.isSentence[start];
+    private boolean isSentence(int start, Cache memory) {
+        if(memory.isEnd(start)) return true;
+        if(memory.visited[start]) return false;
         memory.visited[start] = true;
-        List<Integer> idxs = memory.trie.findWordsEnds(memory.ch, start);
-        if(idxs.isEmpty()) return memory.isSentence[start] = false;
-        if(idxs.contains(memory.ch.length)) return memory.isSentence[start] = true;
+        List<Integer> idxs = memory.findWordEnds(start);
         for (int idx : idxs) {
-            memory.isSentence[start] = wordBreak(idx, memory);
-            if(memory.isSentence[start]) return true;
+            if(isSentence(idx, memory)) return true;
         }
         return false;
     }
     
     static class Cache {
         public boolean[] visited;
-        public boolean[] isSentence;
         public Trie trie;
         public char[] ch;
         
         public Cache(Trie trie, char[] ch) {
             this.ch = ch;
             this.trie = trie;
-            isSentence = new boolean[ch.length];
             visited = new boolean[ch.length];
+        }
+        
+        public List<Integer> findWordEnds(int start) {
+            return trie.findWordsEnds(ch, start);   
+        }
+        
+        public boolean isEnd(int start) {
+            return start == ch.length;
         }
     }
     
